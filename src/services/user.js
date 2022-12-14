@@ -27,6 +27,13 @@ const create = async ({ email, displayName, password, image }) => {
   return { type: null, message: '' };
 };
 
+const getByEmail = async (email) => {
+  const user = await User.findOne({ where: { email } });
+
+  return user;
+};
+
 module.exports = {
   create,
+  getByEmail,
 };
