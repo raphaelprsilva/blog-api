@@ -2,7 +2,6 @@ const { loginSchema } = require('./loginSchema');
 
 const validateLoginSchema = (loginData) => {
   const { error } = loginSchema.validate(loginData);
-  console.log('🚀 ~ loginValidation.js:5 ~ error =', error);
 
   if (error) {
     const {
