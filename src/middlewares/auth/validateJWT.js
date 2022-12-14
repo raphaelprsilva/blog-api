@@ -14,7 +14,6 @@ const validateJWT = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, secret);
-    console.log('🚀 ~ file: validateJWT.js:16 ~ decoded =', decoded);
 
     const user = userService.getByEmail(decoded.email);
 
@@ -26,7 +25,7 @@ const validateJWT = (req, res, next) => {
 
     next();
   } catch (err) {
-    res.status(401).json({ message: err.message });
+    res.status(401).json({ message: 'Expired or invalid token' });
   }
 };
 
