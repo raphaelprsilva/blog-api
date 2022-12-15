@@ -70,9 +70,29 @@ const updatePost = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const token = req.headers.authorization;
+    const userEmail = getUserEmail(token);
+
+    const { type, message } = await postService.deletePost(id, userEmail);
+
+    if (type) {
+      return res.status(mapError(type)).json({ message });
+    }
+
+    return res.status(204).send();
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
+  deletePost,
 };
