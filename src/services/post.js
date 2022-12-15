@@ -99,9 +99,33 @@ const updatePost = async (id, { title, content, userEmail }) => {
   }
 };
 
+const deletePost = async (id, userEmail) => {
+  const t = await sequelize.transaction();
+  try {
+    const userLoggedIn = await User.findOne({ where: { email: userEmail } });
+    const { id: userLoggedInId } = userLoggedIn.dataValues;
+
+    const post = await BlogPost.findOne({ where: { id } });
+    if (!post) return { type: 'NOT_FOUND', message: 'Post does not exist' };
+
+    if (userLoggedInId !== post.userId) {
+      return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+    }
+
+    await BlogPost.destroy({ where: { id }, transaction: t });
+
+    await t.commit();
+    return { type: null, message: 'Post deleted successfully' };
+  } catch (err) {
+    await t.rollback();
+    console.error(err.message);
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
+  deletePost,
 };
