@@ -23,6 +23,13 @@ const create = async (categoryData) => {
   return { type: null, message: category.dataValues };
 };
 
+const getAll = async () => {
+  const categories = await Category.findAll();
+
+  return { type: null, message: categories };
+};
+
 module.exports = {
   create,
+  getAll,
 };
