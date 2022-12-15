@@ -9,6 +9,7 @@ const {
   PostCategory,
 } = require('../database/models');
 const { validatePostSchema } = require('./validations/postValidation');
+const { validateUpdatePostSchema } = require('./validations/updatePostValidation');
 
 const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
@@ -69,8 +70,38 @@ const getPostById = async (id) => {
   return post;
 };
 
+const updatePost = async (id, { title, content, userEmail }) => {
+  const t = await sequelize.transaction();
+  try {
+    const postData = { title, content };
+    const validationResult = validateUpdatePostSchema(postData);
+
+    if (validationResult.type) return validationResult;
+
+    const userLoggedIn = await User.findOne({ where: { email: userEmail } });
+    const { id: userLoggedInId } = userLoggedIn.dataValues;
+
+    const post = await BlogPost.findOne({ where: { id } });
+    if (!post) return { type: 'NOT_FOUND', message: 'Post does not exist' };
+
+    if (userLoggedInId !== post.userId) {
+      return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+    }
+
+    await BlogPost.update({ title, content }, { where: { id }, transaction: t });
+
+    await t.commit();
+    const updatedPost = await getPostById(id);
+    return { type: null, message: updatedPost };
+  } catch (err) {
+    await t.rollback();
+    console.error(err.message);
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  updatePost,
 };
