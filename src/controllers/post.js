@@ -1,3 +1,5 @@
+const { StatusCodes, ReasonPhrases } = require('http-status-codes');
+
 const { postService } = require('../services');
 const { mapError } = require('../utils/errorMap');
 const { getUserEmail } = require('../utils/userEmailFromToken');
@@ -18,7 +20,9 @@ const createPost = async (req, res) => {
     return res.status(201).json(message);
   } catch (err) {
     console.log(err.message);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
   }
 };
 
@@ -29,7 +33,9 @@ const getAllPosts = async (_req, res) => {
     return res.status(200).json(posts);
   } catch (err) {
     console.log(err.message);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
   }
 };
 
@@ -45,7 +51,9 @@ const getPostById = async (req, res) => {
     return res.status(200).json(post);
   } catch (err) {
     console.log(err.message);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
   }
 };
 
@@ -66,7 +74,9 @@ const updatePost = async (req, res) => {
     return res.status(200).json(message);
   } catch (err) {
     console.log(err.message);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
   }
 };
 
@@ -85,7 +95,9 @@ const deletePost = async (req, res) => {
     return res.status(204).send();
   } catch (err) {
     console.log(err.message);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
   }
 };
 
