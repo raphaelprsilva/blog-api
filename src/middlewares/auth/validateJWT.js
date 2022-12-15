@@ -14,14 +14,15 @@ const validateJWT = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, secret);
+    const { data: user } = decoded;
 
-    const user = userService.getByEmail(decoded.email);
+    const userData = userService.getById(user.id);
 
-    if (!user) {
+    if (!userData) {
       return res.status(401).json({ message: 'Expired or invalid token' });
     }
 
-    req.user = user;
+    req.user = userData;
 
     next();
   } catch (err) {
