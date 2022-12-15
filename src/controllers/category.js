@@ -17,6 +17,22 @@ const create = async (req, res) => {
   }
 };
 
+const getAll = async (req, res) => {
+  try {
+    const { type, message } = await categoryService.getAll();
+
+    if (type) {
+      return res.status(mapError(type)).json({ message });
+    }
+
+    return res.status(200).json(message);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   create,
+  getAll,
 };
