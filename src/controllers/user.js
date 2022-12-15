@@ -1,7 +1,3 @@
-const jwt = require('jsonwebtoken');
-
-require('dotenv').config();
-
 const { userService } = require('../services');
 const { mapError } = require('../utils/errorMap');
 
@@ -15,11 +11,7 @@ const create = async (req, res) => {
       return res.status(mapError(type)).json({ message });
     }
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-      expiresIn: '1d',
-    });
-
-    return res.status(201).json({ token });
+    return res.status(201).json({ token: message });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: 'Internal server error' });

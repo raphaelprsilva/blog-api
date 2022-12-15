@@ -1,5 +1,6 @@
 const { User } = require('../database/models');
 const { validateCreateUserSchema } = require('./validations/userValidation');
+const jwtUtil = require('../utils/jwt.util');
 
 const create = async ({ email, displayName, password, image }) => {
   const userData = { email, displayName, password, image };
@@ -18,7 +19,11 @@ const create = async ({ email, displayName, password, image }) => {
 
   await User.create({ email, displayName, password, image });
 
-  return { type: null, message: '' };
+  const userCreated = await User.findOne({ where: { email, password } });
+  const { password: _, ...userWithoutPassword } = userCreated.dataValues;
+  const token = jwtUtil.createToken(userWithoutPassword);
+
+  return { type: null, message: token };
 };
 
 const getByEmail = async (email) => {
