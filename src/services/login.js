@@ -1,7 +1,7 @@
 const { User } = require('../database/models');
 const { validateLoginSchema } = require('./validations/loginValidation');
 
-const login = async (email, password) => {
+const login = async ({ email, password }) => {
   const validationResult = validateLoginSchema({ email, password });
 
   if (validationResult.type) {

@@ -7,7 +7,7 @@ const { mapError } = require('../utils/errorMap');
 module.exports = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const { type, message } = await loginService.login(email, password);
+    const { type, message } = await loginService.login({ email, password });
 
     if (type) {
       return res.status(mapError(type)).json({ message });
