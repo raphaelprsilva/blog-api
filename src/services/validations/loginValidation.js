@@ -9,7 +9,7 @@ const validateLoginSchema = (loginData) => {
     } = error;
 
     return {
-      type: 'invalid_data',
+      type: 'BAD_REQUEST',
       message,
     };
   }

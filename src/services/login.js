@@ -12,7 +12,7 @@ const login = async (email, password) => {
 
   if (!user) {
     return {
-      type: 'invalid_data',
+      type: 'BAD_REQUEST',
       message: 'Invalid fields',
     };
   }
