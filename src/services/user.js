@@ -9,7 +9,7 @@ const create = async ({ email, displayName, password, image }) => {
     return validationResult;
   }
 
-  const user = await User.findOne({ where: { email } });
+  const user = await User.findOne({ where: { email, password } });
 
   if (user) {
     return {
