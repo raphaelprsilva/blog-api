@@ -1,5 +1,6 @@
 const { User } = require('../database/models');
 const { validateLoginSchema } = require('./validations/loginValidation');
+const jwtUtil = require('../utils/jwt.util');
 
 const login = async ({ email, password }) => {
   const validationResult = validateLoginSchema({ email, password });
@@ -17,7 +18,10 @@ const login = async ({ email, password }) => {
     };
   }
 
-  return { type: null, message: '' };
+  const { password: _, ...userWithoutPassword } = user.dataValues;
+  const token = jwtUtil.createToken(userWithoutPassword);
+
+  return { type: null, message: token };
 };
 
 module.exports = {
