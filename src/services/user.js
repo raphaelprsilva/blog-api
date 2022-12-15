@@ -5,9 +5,7 @@ const create = async ({ email, displayName, password, image }) => {
   const userData = { email, displayName, password, image };
   const validationResult = validateCreateUserSchema(userData);
 
-  if (validationResult.type) {
-    return validationResult;
-  }
+  if (validationResult.type) return validationResult;
 
   const user = await User.findOne({ where: { email, password } });
 
