@@ -49,8 +49,30 @@ const getPostById = async (req, res) => {
   }
 };
 
+const updatePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const token = req.headers.authorization;
+    const userEmail = getUserEmail(token);
+    const postData = { title, content, userEmail };
+
+    const { type, message } = await postService.updatePost(id, postData);
+
+    if (type) {
+      return res.status(mapError(type)).json({ message });
+    }
+
+    return res.status(200).json(message);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  updatePost,
 };
