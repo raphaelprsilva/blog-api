@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const loginService = require('../services/login');
+const { mapError } = require('../utils/errorMap');
 
 module.exports = async (req, res) => {
   try {
@@ -9,7 +10,7 @@ module.exports = async (req, res) => {
     const { type, message } = await loginService.login(email, password);
 
     if (type) {
-      return res.status(400).json({ message });
+      return res.status(mapError(type)).json({ message });
     }
 
     const payload = {
