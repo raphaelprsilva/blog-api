@@ -10,7 +10,7 @@ const login = async ({ email, password }) => {
 
   const user = await User.findOne({ where: { email, password } });
 
-  if (!user) {
+  if (!user || user.password !== password) {
     return {
       type: 'BAD_REQUEST',
       message: 'Invalid fields',
