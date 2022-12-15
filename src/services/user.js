@@ -2,12 +2,8 @@ const { User } = require('../database/models');
 const { validateCreateUserSchema } = require('./validations/userValidation');
 
 const create = async ({ email, displayName, password, image }) => {
-  const validationResult = validateCreateUserSchema({
-    email,
-    displayName,
-    password,
-    image,
-  });
+  const userData = { email, displayName, password, image };
+  const validationResult = validateCreateUserSchema(userData);
 
   if (validationResult.type) {
     return validationResult;
