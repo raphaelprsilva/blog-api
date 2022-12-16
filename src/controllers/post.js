@@ -97,10 +97,25 @@ const deletePost = async (req, res) => {
   }
 };
 
+const searchPosts = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const posts = await postService.searchPosts(q);
+
+    return res.status(200).json(posts);
+  } catch (err) {
+    console.log(err.message);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
+  }
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
   deletePost,
+  searchPosts,
 };
