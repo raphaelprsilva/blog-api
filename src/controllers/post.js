@@ -2,7 +2,6 @@ const { StatusCodes, ReasonPhrases } = require('http-status-codes');
 
 const { postService } = require('../services');
 const { mapError } = require('../utils/errorMap');
-const { getUserEmail } = require('../utils/userEmailFromToken');
 
 const createPost = async (req, res) => {
   try {
@@ -81,10 +80,9 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
-    const token = req.headers.authorization;
-    const userEmail = getUserEmail(token);
+    const { id: userLoggedInId } = req.user.dataValues;
 
-    const { type, message } = await postService.deletePost(id, userEmail);
+    const { type, message } = await postService.deletePost(id, userLoggedInId);
 
     if (type) {
       return res.status(mapError(type)).json({ message });
