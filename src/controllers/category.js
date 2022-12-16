@@ -1,3 +1,5 @@
+const { StatusCodes, ReasonPhrases } = require('http-status-codes');
+
 const { categoryService } = require('../services');
 const { mapError } = require('../utils/errorMap');
 
@@ -13,7 +15,9 @@ const create = async (req, res) => {
     return res.status(201).json(message);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
   }
 };
 
@@ -28,7 +32,9 @@ const getAll = async (req, res) => {
     return res.status(200).json(message);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
   }
 };
 
