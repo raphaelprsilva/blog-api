@@ -46,9 +46,25 @@ const getById = async (id) => {
   return user;
 };
 
+const remove = async (id) => {
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    return {
+      type: 'NOT_FOUND',
+      message: 'User does not exist',
+    };
+  }
+
+  await User.destroy({ where: { id } });
+
+  return { type: null, message: 'User deleted successfully' };
+};
+
 module.exports = {
   create,
   getByEmail,
   getAll,
   getById,
+  remove,
 };
