@@ -1,0 +1,529 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Blogs API",
+    "description": "This is the API for Blogs API",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header",
+      "description": "Authentication token",
+      "persistent": true
+    }
+  },
+  "paths": {
+    "/login/": {
+      "post": {
+        "summary": "Login",
+        "tags": ["Login"],
+        "description": "User login with email and password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "required": true,
+                  "description": "User email",
+                  "example": "lewishamilton@gmail.com",
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Password of the user",
+                  "example": "123456",
+                  "format": "password"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/": {
+      "post": {
+        "summary": "Create new user",
+        "tags": ["User"],
+        "description": "This route is used to create a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Email of the user",
+                  "example": "madruga@mail.com",
+                  "format": "email"
+                },
+                "displayName": {
+                  "type": "string",
+                  "required": true,
+                  "minLength": 8,
+                  "description": "Name of the user",
+                  "example": "Ramon Valdez"
+                },
+                "password": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Password of the user",
+                  "example": "123456asdf",
+                  "format": "password"
+                },
+                "image": {
+                  "type": "string",
+                  "description": "Image link of the user",
+                  "example": "https://f.i.uol.com.br/fotografia/2018/08/07/15336661995b69e39778b65_1533666199_3x2_md.jpg"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Get all users",
+        "tags": ["User"],
+        "description": "Get all user data from database",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Get user by id",
+        "tags": ["User"],
+        "description": "Get specific user data from database",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/me": {
+      "delete": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Remove user",
+        "tags": ["User"],
+        "description": "Remove current user logged in from database",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/categories/": {
+      "post": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Create new Blog Post Category",
+        "tags": ["Categories"],
+        "description": "This route is used to create a new blog post category",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Name of the category",
+                  "example": "Typescript"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "List all Blog Post Categories",
+        "tags": ["Categories"],
+        "description": "This route is used to list all blog post categories",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/post/": {
+      "post": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Create new Blog Post",
+        "tags": ["Blog Post"],
+        "description": "This route is used to create new blog post",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Blog post title",
+                  "example": "Latest updates, August 1st"
+                },
+                "content": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Blog post content",
+                  "example": "The whole text for the blog post goes here in this key"
+                },
+                "categoryIds": {
+                  "type": "array",
+                  "required": true,
+                  "description": "Blog post categories",
+                  "example": [1, 2, 3]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "List all Blog posts",
+        "tags": ["Blog Post"],
+        "description": "This route is used to list all blog posts",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/post/search": {
+      "get": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "List blog posts by search query",
+        "tags": ["Blog Post"],
+        "description": "This route is used to list blog post by search query",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "type": "string",
+            "example": "typescript",
+            "description": "Search query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/post/{id}": {
+      "get": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "List a Blog post by id",
+        "tags": ["Blog Post"],
+        "description": "This route is used to list blog post by his id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Update a Blog post by id",
+        "tags": ["Blog Post"],
+        "description": "This route is used to update blog post by his id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Blog post title",
+                  "example": "Latest updates, August 1st"
+                },
+                "content": {
+                  "type": "string",
+                  "required": true,
+                  "description": "Blog post content",
+                  "example": "The whole text for the blog post goes here in this key"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Delete a Blog post by id",
+        "tags": ["Blog Post"],
+        "description": "This route is used to delete blog post by his id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "required": true,
+            "description": "Authentication token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  }
+}
