@@ -60,9 +60,8 @@ const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, content } = req.body;
-    const token = req.headers.authorization;
-    const userEmail = getUserEmail(token);
-    const postData = { title, content, userEmail };
+    const { id: userLoggedInId } = req.user.dataValues;
+    const postData = { title, content, userLoggedInId };
 
     const { type, message } = await postService.updatePost(id, postData);
 
