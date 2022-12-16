@@ -69,16 +69,13 @@ const getPostById = async (id) => {
   return post;
 };
 
-const updatePost = async (id, { title, content, userEmail }) => {
+const updatePost = async (id, { title, content, userLoggedInId }) => {
   const t = await sequelize.transaction();
   try {
     const postData = { title, content };
     const validationResult = validateUpdatePostSchema(postData);
 
     if (validationResult.type) return validationResult;
-
-    const userLoggedIn = await User.findOne({ where: { email: userEmail } });
-    const { id: userLoggedInId } = userLoggedIn.dataValues;
 
     const post = await BlogPost.findOne({ where: { id } });
     if (!post) return { type: 'NOT_FOUND', message: 'Post does not exist' };
