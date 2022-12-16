@@ -14,7 +14,7 @@ const { validateUpdatePostSchema } = require('./validations/updatePostValidation
 const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
 
-const createPost = async ({ title, content, categoryIds, userEmail }) => {
+const createPost = async ({ title, content, categoryIds, userLoggedInId }) => {
   const t = await sequelize.transaction();
   try {
     const postData = { title, content, categoryIds };
@@ -22,9 +22,8 @@ const createPost = async ({ title, content, categoryIds, userEmail }) => {
 
     if (validationResult.type) return validationResult;
 
-    const userData = await User.findOne({ where: { email: userEmail } });
-    const { id } = userData.dataValues;
-    const newBlogPost = await BlogPost.create({ userId: id, title, content }, { transaction: t });
+    const newBlogPost = await BlogPost
+      .create({ userId: userLoggedInId, title, content }, { transaction: t });
     const postCategoriesIds = categoryIds.map(async (categoryId) =>
       Category.findOne({ where: { id: categoryId }, transaction: t }));
     const categoriesCheck = await Promise.all(postCategoriesIds);
