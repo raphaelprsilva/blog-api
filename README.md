@@ -26,8 +26,7 @@
 
 ## 🎯 Objetivo do projeto
 
-Este é um projeto de cunho educativo, no qual foi possível desenvolver uma
-uma aplicação de um blog (_palestrantes_) em que é possível fazer login, cadastrar, visualizar, pesquisar, editar e excluir dados referentes à usuários, categorias dos posts e as próprias postagens do Blog.
+Este é um projeto de cunho educativo, no qual foi possível desenvolver uma aplicação de uma API de blog em que é possível fazer login, cadastrar, visualizar, pesquisar, editar e excluir dados referentes à usuários, categorias dos posts e as próprias postagens do Blog.
 
 - foi desenvolvida uma aplicação em `Node.js` usando o pacote `sequelize` para fazer um `CRUD` de posts
 
