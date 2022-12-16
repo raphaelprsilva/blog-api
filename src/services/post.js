@@ -95,12 +95,9 @@ const updatePost = async (id, { title, content, userLoggedInId }) => {
   }
 };
 
-const deletePost = async (id, userEmail) => {
+const deletePost = async (id, userLoggedInId) => {
   const t = await sequelize.transaction();
   try {
-    const userLoggedIn = await User.findOne({ where: { email: userEmail } });
-    const { id: userLoggedInId } = userLoggedIn.dataValues;
-
     const post = await BlogPost.findOne({ where: { id } });
     if (!post) return { type: 'NOT_FOUND', message: 'Post does not exist' };
 
