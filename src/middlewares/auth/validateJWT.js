@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const secret = process.env.JWT_SECRET;
 
-const validateJWT = (req, res, next) => {
+const validateJWT = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
@@ -16,7 +16,7 @@ const validateJWT = (req, res, next) => {
     const decoded = jwt.verify(token, secret);
     const { data: user } = decoded;
 
-    const userData = userService.getById(user.id);
+    const userData = await userService.getById(user.id);
 
     if (!userData) {
       return res.status(401).json({ message: 'Expired or invalid token' });
