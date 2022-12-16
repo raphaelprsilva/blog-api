@@ -7,9 +7,8 @@ const { getUserEmail } = require('../utils/userEmailFromToken');
 const createPost = async (req, res) => {
   try {
     const { title, content, categoryIds } = req.body;
-    const token = req.headers.authorization;
-    const userEmail = getUserEmail(token);
-    const postData = { title, content, categoryIds, userEmail };
+    const { id: userLoggedInId } = req.user.dataValues;
+    const postData = { title, content, categoryIds, userLoggedInId };
 
     const { type, message } = await postService.createPost(postData);
 
