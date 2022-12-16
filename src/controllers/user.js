@@ -53,8 +53,28 @@ const getById = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    const { type, message } = await userService.remove(id);
+
+    if (type) {
+      return res.status(mapError(type)).json({ message });
+    }
+
+    return res.status(204).send();
+  } catch (err) {
+    console.error(err.message);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  remove,
 };
